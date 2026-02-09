@@ -1,56 +1,52 @@
-# Modern Software Engineering with GitHub Copilot
+# Modern Software Engineering with Agents
 
-Custom Copilot agents, instructions, and prompt files.
+Custom skills, instructions, and prompt files for AI tools.
 
-This repository contains specialized GitHub Copilot agents that guide you through the Test-Driven Development (TDD) cycle. These agents follow the Red-Green-Refactor workflow and are designed to work with Python projects using PyTest and Gherkin/BDD feature files.
+This repository contains specialized agent skills that guide you through the Test-Driven Development (TDD) cycle. These skills follow the Red-Green-Refactor workflow and are designed to work with projects using Gherkin/BDD feature files.
 
-## What are GitHub Copilot Agents?
+## What are Agent Skills?
 
-GitHub Copilot agents are AI assistants that provide specialized guidance for specific development tasks. They live in the `.github/agents/` directory of your repository and can be invoked directly in VS Code through GitHub Copilot Chat.
+[Agent skills](https://agentskills.io/home) are reusable prompt files that provide specialized guidance for specific development tasks. They live in the `skills/` directory of your repository (symlinked from `.claude/skills/`) and can be invoked from different AI tools.
 
-## Available Agents
+## Available Skills
 
-### 1. [TDD-Red](./.github/agents/tdd_red.agent.md)
+### 1. [TDD-Red](./skills/tdd-red/SKILL.md)
 
 **Purpose**: Write failing tests that describe desired behavior before implementation exists.
 
-**When to use**: Start here when beginning a new feature. This agent helps you translate Gherkin (BDD) feature files into PyTest tests.
+**When to use**: Start here when beginning a new feature. This skill helps you translate Gherkin (BDD) feature files into unit tests.
 
 **How to use**:
 
-1. Open VS Code and ensure you have GitHub Copilot and GitHub Copilot Chat extensions installed
-2. Create or open a Gherkin feature file (e.g., `features/authentication.feature`)
-3. Open the Copilot Chat panel (Ctrl/Cmd + Shift + I)
-4. Write your prompt
-5. Example: `Write failing tests for the authentication feature`
+1. Create or open a Gherkin feature file (e.g., `features/authentication.feature`)
+2. Invoke the skill with `/tdd-red`
+3. Example prompt: `Write failing tests for the authentication feature`
 
 **What it does**:
 
 - Reads your Gherkin feature files from the `features/` directory
-- Translates scenarios into PyTest tests following Given-When-Then structure
+- Translates scenarios into unit tests following Given-When-Then structure
 - Ensures tests fail for the right reason (missing implementation, not syntax errors)
-- Uses `assertpy` library for readable assertions
 - Creates isolated, independent tests with proper fixtures
 
 **Key principles**:
 
 - Write one test at a time
 - Focus on specific behavior from feature requirements
-- Use descriptive test names like `test_user_can_sign_in_with_valid_credentials()`
+- Use descriptive test names
 - Prefer real objects; only fake external dependencies (databases, APIs, file systems)
 
-### 2. [TDD-Green](./.github/agents/tdd_green.agent.md)
+### 2. [TDD-Green](./skills/tdd-green/SKILL.md)
 
 **Purpose**: Implement minimal code to make failing tests pass without over-engineering.
 
-**When to use**: After you have failing tests from the Red phase. This agent helps you write just enough code to make tests pass.
+**When to use**: After you have failing tests from the Red phase. This skill helps you write just enough code to make tests pass.
 
 **How to use**:
 
 1. Ensure you have failing tests in your `tests/` directory
-2. Open the Copilot Chat panel
-3. Write your prompt
-4. Example: `Make unit tests pass in this file`
+2. Invoke the skill with `/tdd-green`
+3. Example prompt: `Make unit tests pass in this file`
 
 **What it does**:
 
@@ -68,18 +64,17 @@ GitHub Copilot agents are AI assistants that provide specialized guidance for sp
 - No logging, comments, type hints, or extra validation
 - Run tests after each small change
 
-### 3. [TDD-Refactor](./.github/agents/tdd_refactor.agent.md)
+### 3. [TDD-Refactor](./skills/tdd-refactor/SKILL.md)
 
 **Purpose**: Improve code quality, apply best practices, and enhance design while maintaining green tests.
 
-**When to use**: After all tests are passing from the Green phase. This agent helps you clean up the code without breaking functionality.
+**When to use**: After all tests are passing from the Green phase. This skill helps you clean up the code without breaking functionality.
 
 **How to use**:
 
-1. Ensure all tests are passing (run `task test`)
-2. Open the Copilot Chat panel
-3. Write your prompt
-4. Example: `Improve the authentication code design`
+1. Ensure all tests are passing
+2. Invoke the skill with `/tdd-refactor`
+3. Example prompt: `Improve the authentication code design`
 
 **What it does**:
 
@@ -87,7 +82,6 @@ GitHub Copilot agents are AI assistants that provide specialized guidance for sp
 - Applies SOLID principles
 - Improves readability with intention-revealing names
 - Keeps classes under 100 lines and methods under 10 lines
-- Uses Pydantic models for data structures
 - Maintains test coverage and ensures tests stay green
 - Runs linters and static analysis
 
@@ -102,26 +96,26 @@ GitHub Copilot agents are AI assistants that provide specialized guidance for sp
 
 ### Complete TDD Workflow
 
-Here's how to use all three agents together:
+Here's how to use all three skills together:
 
 ```text
-1. RED Phase
+1. RED Phase — /tdd-red
    └─> Write tests for login feature
-       ├─> Creates failing PyTest tests from Gherkin scenarios
-       └─> Verify tests fail: `task test`
-       └─> Handoff to the TDD-Green agent
+       ├─> Creates failing unit tests from Gherkin scenarios
+       └─> Verify tests fail
+       └─> Handoff to /tdd-green
 
-2. GREEN Phase
+2. GREEN Phase — /tdd-green
    └─> Implement code to pass login tests
        ├─> Writes minimal implementation
-       └─> Verify tests pass: `task test`
-       └─> Handoff to the TDD-Refactor agent
+       └─> Verify tests pass
+       └─> Handoff to /tdd-refactor
 
-3. REFACTOR Phase
+3. REFACTOR Phase — /tdd-refactor
    └─> Refactor the login code
        ├─> Improves design and readability
-       └─> Verify tests still pass: `task test`
-       └─> Handoff to the TDD-Red agent
+       └─> Verify tests still pass
+       └─> Handoff to /tdd-red
 
 4. Repeat RED Phase
    ...
@@ -129,24 +123,17 @@ Here's how to use all three agents together:
 
 ### Prerequisites
 
-**VS Code** with the following extensions:
+**Project** with:
 
-- GitHub Copilot
-- GitHub Copilot Chat
-
-**Python** project with:
-
-- PyTest test runner
-- `assertpy` library for assertions
-- Gherkin feature files (optional, but recommended)
-- Task runner configured (for `task test` command)
+- A test runner (e.g., PyTest, Vitest, Jest)
+- Gherkin feature files (optional, but highly recommended)
 
 ### Tips for Best Results
 
 1. **Be specific in your prompts**: Instead of "write tests", say "write tests for user authentication with valid credentials".
-2. **Work one phase at a time**: Don't skip ahead; the agents are designed to work sequentially.
-3. **Reference files**: Mention specific feature files or test files in your prompts with <kbd>#</kbd>.
-4. **Review agent output**: These agents provide guidance, but you should review and validate all generated code. Do not blindly accept suggestions and accumulate comprehension debt.
+2. **Work one phase at a time**: Don't skip ahead; the skills are designed to work sequentially.
+3. **Reference files**: Mention specific feature files or test files in your prompts.
+4. **Review skill output**: These skills provide guidance, but you should review and validate all generated code. Do not blindly accept suggestions and accumulate comprehension debt.
 5. **Keep tests isolated**: Each test should be independent and not rely on shared state.
-6. **Run tests frequently**: Verify your tests after each change with `task test`.
-7. **Do not let agents to use Git**: Forbid agents to make commits, branches, or any other Git operations. You are still and always will be the navigator while the agents are simple drivers.
+6. **Run tests frequently**: Verify your tests after each change.
+7. **Do not let skills use Git**: Forbid skills from making commits, branches, or any other Git operations. You are still and always will be the navigator while the skills are simple drivers.

@@ -1,18 +1,16 @@
 ---
-name: TDD-Refactor
-description: Improve code quality, apply best practices, and enhance design whilst maintaining green tests.
-handoffs:
-    - label: Write the next failing test
-      agent: TDD-Red
-      prompt: Write the next failing test based on the feature requirements.
-      send: false
+name: tdd-refactor
+description: >-
+  Improve code quality, apply best practices, and enhance design whilst maintaining green tests.
+  Use after tests pass and the code needs cleanup, when the user asks to refactor, or when
+  code smells need to be addressed without changing behaviour.
 ---
 
 # TDD Refactor Phase - Improve Code Quality and Design
 
-### Quality Gates
+## Quality Gates
 
-- **Definition of Done adherence** - Ensure all tests are passing by running `task test` before starting any activity.
+- **Definition of Done adherence** - Ensure all tests are passing by running all tests before starting any activity.
 - **Code smells** - Identify and eliminate code smells such as duplicated code, long methods, large classes, and complex conditionals.
 - **Security requirements** - Address any security considerations.
 - **Performance criteria** - Meet any performance requirements.
@@ -70,29 +68,32 @@ Use battle-tested refactoring techniques:
 
 ## Execution Guidelines
 
-1. **Ensure green tests** - All tests must pass before refactoring can start. Verify this by running `task test`.
+1. **Ensure green tests** - All tests must pass before refactoring can start. Verify this by running all tests.
 2. **Small incremental changes** - Refactor in tiny, atomic steps.
 3. **Apply one improvement at a time** - Focus on a single refactoring technique.
 4. **No test code modifications** - Do NOT modify any test code during refactoring.
 5. **Continuous testing** - Run tests after EACH and EVERY change.
-7. **Coverage preservation** - Ensure test coverage doesn't decrease during refactoring.
-8. **Static analysis** - Run linters and static analysis tools after changes.
-9. **API stability** - Validate that publicly exposed APIs and contracts remain unchanged.
-10. **Rollback readiness** - Revert to a previous working state when tests become unstable or complexity increases to the point you cannot reason about the changes.
+6. **Coverage preservation** - Ensure test coverage doesn't decrease during refactoring.
+7. **Static analysis** - Run linters and static analysis tools after changes.
+8. **API stability** - Validate that publicly exposed APIs and contracts remain unchanged.
+9. **Rollback readiness** - Revert to a previous working state when tests become unstable or complexity increases to the point you cannot reason about the changes.
 
 ## Refactor Phase Checklist
 
 ### Before Starting
-- [ ] All tests passed before starting.
+
+- [ ] All tests pass before starting.
 - [ ] Current test coverage recorded.
 
 ### During Refactoring
+
 - [ ] Linters and static analysis tools run successfully.
 - [ ] Tests pass after every change.
 - [ ] Specific refactoring technique documented.
 - [ ] No modifications made to test code.
 
 ### After Refactoring
+
 - [ ] Code readability and design improved.
 - [ ] All tests remain green.
 - [ ] Test coverage is maintained or improved.
@@ -102,6 +103,7 @@ Use battle-tested refactoring techniques:
 - [ ] Performance improved where applicable.
 
 ### Technical Debt
+
 - [ ] Remaining refactoring opportunities documented and suggested to the user.
 - [ ] Non-obvious design decisions recorded.
 - [ ] Breaking changes or impacts flagged.

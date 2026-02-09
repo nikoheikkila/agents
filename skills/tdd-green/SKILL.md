@@ -1,22 +1,21 @@
 ---
-name: TDD-Green
-description: Implement minimal code to make failing tests pass without over-engineering.
-handoffs:
-    - label: Refactor the solution
-      agent: TDD-Refactor
-      prompt: Refactor the code and keep tests passing.
-      send: false
+name: tdd-green
+description: >-
+  Implement minimal code to make failing unit tests pass without over-engineering.
+  Use when there is a failing test that needs the simplest possible implementation
+  to turn green, or when the user asks to make a test pass.
 ---
 
 # TDD Green Phase - Make Tests Pass Quickly
 
-Write the minimal code necessary to make Pytest tests under `tests` directory pass.
-Do not write any more code than required.
+Write the minimal code necessary to make unit tests provided by the user as a context to pass.
+
+**Do not write any more code than required.**
 
 ## Mandatory Rules
 
-- **Do not change the tests** - Never touch the Pytest test code during this phase.
-- **Always stay in scope** - Implement only what's required to make the test pass, avoid scope creep.
+- **Do not change the tests** - Never touch the unit test code during this phase.
+- **Always stay in the scope** - Implement only what's required to make the test pass, avoid scope creep.
 - **Minimum viable solution** - Focus on core requirements from the test.
 
 ## Core Principles
@@ -26,24 +25,24 @@ Do not write any more code than required.
 - **Green bar quickly** - Prioritize making tests pass over code quality, design, or optimization efforts.
 - **Ignore code smells temporarily** - Duplication and poor design will be addressed in the refactor phase later.
 - **Simple solutions first** - Choose the most straightforward implementation path.
-- **Defer complexity** - Don't anticipate requirements beyond current test scope.
+- **Defer complexity** - Don't anticipate requirements beyond the current test scope.
 
-## Python Implementation Strategies
+## Implementation Strategies
 
-- **Use the simplest language features** - Add crude if/else and for/while logic, don't use mapping, filtering or list/dictionary comprehensions.
-- **Use basic collections** - Use simple lists, tuples, and dictionaries over data classes or complex data structures.
+- **Use the simplest language features** - Add crude if/else and for/while logic, don't use mapping, filtering, reducing or similar advanced array methods.
+- **Use basic collection types** - Use simple arrays and objects over more complex data structures.
 
 ## Error Handling
 
 - **Minimal exception handling** - Only handle exceptions if the test explicitly expects them.
 - **Let failures propagate** - Don't add try/catch blocks unless required by the test.
 - **Match expected errors** - Return exact error messages or types the test assertions check for.
-- **No defensive programming** - Skip input validation unless tests verify it.
+- **No defensive programming** - Skip input validation unless tests demand it.
 
 ## Test Isolation & Execution
 
-- **Run tests independently** - Ensure each test passes in isolation, not just as part of the suite.
-- **No shared state** - Avoid using class variables, module-level state, or global variables that could leak between tests.
+- **Run tests independently** - Ensure each test passes in isolation, not just as part of the full test suite.
+- **No shared state** - Avoid using module-level state or global variables that could leak between tests.
 - **Order independence** - Tests should pass regardless of execution order.
 - **One assertion at a time** - If a test has multiple assertions, make them pass incrementally.
 
@@ -52,21 +51,21 @@ Do not write any more code than required.
 - **Mirror test imports** - Create files exactly where the test expects to import from.
 - **Match signatures exactly** - Function names, parameters, and return types must align with test calls.
 - **Minimal imports** - Only import what's immediately needed to make the test pass.
-- **No premature abstraction** - Keep code in the module under test, don't extract helper modules.
+- **No premature abstraction** - Keep code in the module under test, don't extract any helper modules.
 
 ## Transformation Priority Premise
 
 Apply the simplest transformation that makes the test pass, in this order:
 
-1. **{}→nil** - No code to `None`
-2. **nil→constant** - Return a hard-coded value (e.g. string)
-3. **constant→constant+** - Add another hard-coded value (e.g. number)
-4. **constant→scalar** - Replace constant with a variable
-5. **statement→statements** - Add more statements
-6. **unconditional→if** - Add a conditional for handling branched logic
-7. **scalar→array** - Use a collection
-8. **array→container** - Use a more complex structure
-9. **statement→recursion** - Add recursive logic (only if needed)
+1. **{}->nil** - No code to `None`
+2. **nil->constant** - Return a hard-coded value (e.g. string)
+3. **constant->constant+** - Add another hard-coded value (e.g. number)
+4. **constant->scalar** - Replace constant with a variable
+5. **statement->statements** - Add more statements
+6. **unconditional->if** - Add a conditional for handling branched logic
+7. **scalar->array** - Use a collection
+8. **array->container** - Use a more complex structure
+9. **statement->recursion** - Add recursive logic (only if needed)
 
 Start at the top. Never jump directly to complex solutions.
 
@@ -94,7 +93,7 @@ Start at the top. Never jump directly to complex solutions.
 
 ## Success Criteria
 
-- **All tests pass** - Green bar with `task test` returning exit code 0.
+- **All tests pass** - Green bar with all tests passing.
 - **No test modifications** - Test files remain unchanged.
 - **Fast execution** - Tests run quickly (seconds, not minutes).
 - **Warnings are acceptable** - Warnings can be addressed in the refactor phase.
@@ -103,7 +102,7 @@ Start at the top. Never jump directly to complex solutions.
 ## Execution Guidelines
 
 1. **Review test requirements** - Confirm the test case is understood before implementation.
-2. **Run the failing test** - Analyze exactly what needs to be implemented by running tests with `task test`.
+2. **Run the failing test** - Analyze exactly what needs to be implemented by running tests first.
 3. **Write minimal code** - Add just enough code to make the test pass.
 4. **Run all tests** - Ensure new code doesn't break existing functionality.
 
