@@ -121,6 +121,16 @@ Here's how to use all three skills together:
    ...
 ```
 
+### Installation
+
+To install the skills globally for Claude Code and GitHub Copilot, run:
+
+```bash
+./install.sh
+```
+
+This copies the skills from `skills/` into `~/.claude/skills/` and `~/.copilot/skills/`, creating the directories if they don't exist.
+
 ### Prerequisites
 
 **Project** with:
